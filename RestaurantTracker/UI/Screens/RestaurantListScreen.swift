@@ -87,7 +87,7 @@ struct RestaurantListScreen: View {
             name: "",
             mapLink: "",
             notes: "",
-            rating: 0,
+            rating: 1,
             price: .expensive,
             taste: .trash,
         )

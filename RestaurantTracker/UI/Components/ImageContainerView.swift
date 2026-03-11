@@ -7,21 +7,23 @@
 
 import SwiftUI
 
-struct IconView: View {
+struct ImageContainerView: View {
     let imageData: Data?
+    let width: CGFloat
+    let height: CGFloat
 
     var body: some View {
         if let imageData = imageData {
             if let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .frame(width: 120, height: 100)
+                    .frame(width: width, height: height)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         } else {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
-                    .frame(width: 120, height: 100)
+                    .frame(width: width, height: height)
                     .foregroundStyle(Color(UIColor.secondaryLabel))
 
                 Image(systemName: "photo")
@@ -32,5 +34,9 @@ struct IconView: View {
 }
 
 #Preview {
-    IconView(imageData: nil)
+    ImageContainerView(
+        imageData: nil,
+        width: 300,
+        height: 300
+    )
 }

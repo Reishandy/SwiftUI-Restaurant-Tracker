@@ -21,9 +21,65 @@ struct RestaurantDetailScreen: View {
     }
 
     var body: some View {
-        Form {
-            TextField("Restaurant name", text: $restaurant.name)
+        ScrollView {
+            VStack {
+                ImageContainerView(
+                    imageData: restaurant.photoData,
+                    width: .infinity,
+                    height: 400
+                )
+
+                // TODO: Extract this
+                VStack(alignment: .leading, spacing: 18) {
+                    TextField(
+                        "Restaurant name",
+                        text: $restaurant.name,
+                        axis: .vertical
+                    )
+                    .lineLimit(1...3)
+                    .font(.title)
+                    .bold()
+                    // This is to prevent multi lines on name, so only singe line
+                    .onChange(of: restaurant.name) { oldValue, newValue in
+                        if newValue.contains("\n") {
+                            restaurant.name = newValue.replacingOccurrences(
+                                of: "\n",
+                                with: ""
+                            )
+                        }
+                    }
+
+                    HStack {
+                        // Display the open link button if
+                        // it is not empty and is a valid url
+                        if !restaurant.mapLink.isEmpty,
+                            isValidWebURL(restaurant.mapLink),
+                            let mapURL = URL(string: restaurant.mapLink)
+                        {
+                            Link(destination: mapURL) {
+                                Image(systemName: "arrow.up.forward.app")
+                                    .font(.title)
+                            }
+                        }
+
+                        TextField(
+                            "Restaurant Map Link",
+                            text: $restaurant.mapLink
+                        )
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                    }
+                }
+                .padding()
+
+                // Card with reviews
+
+                // Card for note
+
+                Spacer()
+            }
         }
+        .edgesIgnoringSafeArea(.top)
         .navigationTitle("Restaurant")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -32,7 +88,6 @@ struct RestaurantDetailScreen: View {
                     Button("Save") {
                         dismiss()
                     }
-                    .disabled(restaurant.name.isEmpty)
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -41,6 +96,8 @@ struct RestaurantDetailScreen: View {
                     }
                 }
             }
+
+            // TODO: Add share functionality
         }
     }
 }
@@ -51,8 +108,11 @@ struct RestaurantDetailScreen: View {
     }
 }
 
-#Preview {
+#Preview("New") {
     NavigationStack {
-        RestaurantDetailScreen(restaurant: SampleData.shared.restaurantSample, isNew: true)
+        RestaurantDetailScreen(
+            restaurant: SampleData.shared.restaurantSample,
+            isNew: true
+        )
     }
 }

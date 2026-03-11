@@ -66,9 +66,12 @@ class Restaurant {
             rating: 4,
             price: .cheap,
             taste: .meh,
+            photoData: imageData(
+                from: "https://picsum.photos/seed/warungbuni/1000/1000"
+            )
         ),
         Restaurant(
-            name: "Resto 2",
+            name: "",
             mapLink: "https://reishandy.id/",
             notes: "Do not go here ever again!",
             rating: 1,

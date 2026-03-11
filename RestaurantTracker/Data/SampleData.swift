@@ -16,7 +16,7 @@ class SampleData {
         modelContainer.mainContext
     }
 
-    var restaurantSample: Restaurant = Restaurant.sampleData.first!
+    var restaurantSample: Restaurant = Restaurant.sampleData[2]
 
     private init() {
         let schema = Schema([

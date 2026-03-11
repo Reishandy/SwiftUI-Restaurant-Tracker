@@ -13,12 +13,28 @@ struct RestaurantCardView: View {
     var body: some View {
         ZStack {
             HStack {
-                IconView(imageData: restaurant.photoData)
+                ImageContainerView(
+                    imageData: restaurant.photoData,
+                    width: 100,
+                    height: 100
+                )
 
                 VStack {
                     HStack {
-                        Text(restaurant.name)
-                            .font(.headline)
+                        // Chack if the name is empty, if so display a No Name label instead
+                        // This is to prevent empty list name, and so that I don't need to-
+                        // implement a required field and validation
+                        // I'm just going to copy Apple's Notes style of things
+                        if restaurant.name.trimmingCharacters(
+                            in: .whitespacesAndNewlines
+                        ).isEmpty {
+                            Text("\"Unnamed Restaurant\"")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                        } else {
+                            Text(restaurant.name)
+                                .font(.headline)
+                        }
 
                         Spacer()
                     }
