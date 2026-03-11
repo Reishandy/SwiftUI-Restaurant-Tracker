@@ -12,6 +12,7 @@ struct RestaurantListScreen: View {
     @Query private var restaurants: [Restaurant]
     @Environment(\.modelContext) private var context
     @State private var newRestaurant: Restaurant?
+    private var fromSearch: Bool
 
     init(titleAndNoteFilter: String = "") {
         let predicate = #Predicate<Restaurant> { restaurant in
@@ -21,6 +22,8 @@ struct RestaurantListScreen: View {
                     titleAndNoteFilter
                 )
         }
+        
+        fromSearch = !titleAndNoteFilter.isEmpty
 
         _restaurants = Query(
             filter: predicate,
@@ -57,8 +60,8 @@ struct RestaurantListScreen: View {
                 .listStyle(.plain)
             } else {
                 ContentUnavailableView(
-                    "No Restaurant yet",
-                    systemImage: "fork.knife"
+                    fromSearch ? "No Result Found" : "No Restaurant",
+                    systemImage: fromSearch ? "magnifyingglass" : "fork.knife"
                 )
             }
         }
@@ -79,7 +82,7 @@ struct RestaurantListScreen: View {
             
             ToolbarItem(placement: .bottomBar) {
                 Button("Pick for me!") {
-                    
+                    // TODO: Do something with the logic
                 }
                 .frame(maxWidth: .infinity)
             }
