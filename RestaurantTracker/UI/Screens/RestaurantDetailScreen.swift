@@ -5,6 +5,7 @@
 //  Created by Muhammad Akbar Reishandy on 11/03/26.
 //
 
+import PhotosUI
 import SwiftData
 import SwiftUI
 
@@ -15,6 +16,8 @@ struct RestaurantDetailScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
 
+    @State private var selectedPhoto: PhotosPickerItem?
+
     init(restaurant: Restaurant, isNew: Bool = false) {
         self.restaurant = restaurant
         self.isNew = isNew
@@ -23,12 +26,27 @@ struct RestaurantDetailScreen: View {
     var body: some View {
         ScrollView {
             VStack {
-                // TODO: Implement click and save
-                ImageContainerView(
-                    imageData: restaurant.photoData,
-                    width: .infinity,
-                    height: 400
-                )
+                PhotosPicker(
+                    selection: $selectedPhoto,
+                    matching: .images,
+                    photoLibrary: .shared()
+                ) {
+                    ImageContainerView(
+                        imageData: restaurant.photoData,
+                        width: .infinity,
+                        height: 400
+                    )
+                }
+                .foregroundStyle(.secondary)
+                .onChange(of: selectedPhoto) { oldPhoto, newPhoto in
+                    Task {
+                        if let data = try? await newPhoto?.loadTransferable(
+                            type: Data.self
+                        ) {
+                            restaurant.photoData = data
+                        }
+                    }
+                }
 
                 NameAndMapView(restaurant: restaurant)
                     .padding()
@@ -36,9 +54,8 @@ struct RestaurantDetailScreen: View {
                 ReviewsCardView(restaurant: restaurant)
                     .padding()
 
-                // Card for note
-
-                Spacer()
+                NoteCardView(restaurant: restaurant)
+                    .padding()
             }
         }
         .edgesIgnoringSafeArea(.top)
@@ -61,6 +78,7 @@ struct RestaurantDetailScreen: View {
 
             // TODO: Add share functionality
         }
+        .scrollDismissesKeyboard(.interactively)
     }
 }
 

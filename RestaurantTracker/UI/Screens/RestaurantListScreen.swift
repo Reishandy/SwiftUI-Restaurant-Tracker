@@ -35,7 +35,6 @@ struct RestaurantListScreen: View {
     var body: some View {
         Group {
             if !restaurants.isEmpty {
-                // TODO: Deal with that remaining single divider line below
                 List {
                     ForEach(restaurants) { restaurant in
                         RestaurantCardView(restaurant: restaurant)
@@ -52,7 +51,7 @@ struct RestaurantListScreen: View {
                 )
             }
         }
-        .navigationTitle("RestoTrack")  // TODO: Possibly make this inline with the buttons
+        .navigationTitle("RestoTrack")
         .navigationSubtitle("A simple app to track your food journey")
         .toolbar {
             ToolbarItem {

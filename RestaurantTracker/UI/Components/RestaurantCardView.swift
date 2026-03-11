@@ -50,7 +50,7 @@ struct RestaurantCardView: View {
                 .padding(.leading, 8)
             }
             .padding(10)
-            .glassEffect(in: RoundedRectangle(cornerRadius: 12))  // TODO: Solve the shadow conflict with the list
+            .glassEffect(in: RoundedRectangle(cornerRadius: 12))
 
             NavigationLink(
                 destination: RestaurantDetailScreen(
