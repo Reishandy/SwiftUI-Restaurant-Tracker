@@ -9,32 +9,44 @@ import SwiftUI
 
 struct RestaurantCardView: View {
     let restaurant: Restaurant
-    
-    var body: some View {
-        HStack() {
-            IconView(imageData: restaurant.photoData)
-            
-            VStack() {
-                HStack {
-                    Text(restaurant.name)
-                        .font(.headline)
-                    
-                    Spacer()
-                }
-                .padding(.bottom, 8)
 
-                
-                HStack {
-                    RatingView(rating: restaurant.rating)
-                    
-                    Spacer()
+    var body: some View {
+        ZStack {
+            HStack {
+                IconView(imageData: restaurant.photoData)
+
+                VStack {
+                    HStack {
+                        Text(restaurant.name)
+                            .font(.headline)
+
+                        Spacer()
+                    }
+                    .padding(.bottom, 8)
+
+                    HStack {
+                        RatingView(rating: restaurant.rating)
+
+                        Spacer()
+                    }
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.leading, 8)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.leading, 8)
+            .padding(10)
+            .glassEffect(in: RoundedRectangle(cornerRadius: 12))  // TODO: Solve the shadow conflict with the list
+
+            NavigationLink(
+                destination: RestaurantDetailScreen(
+                    restaurant: restaurant
+                )
+            ) {
+                EmptyView()
+            }
+            .opacity(0)
         }
-        .padding(10)
-        .glassEffect(in: RoundedRectangle(cornerRadius: 12)) // TODO: Solve the shadow conflict with the list
+        .frame(height: 120)
+        .padding(8)
     }
 }
 

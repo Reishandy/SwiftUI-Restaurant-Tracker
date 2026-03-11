@@ -22,7 +22,7 @@ struct RestaurantListScreen: View {
                     titleAndNoteFilter
                 )
         }
-        
+
         fromSearch = !titleAndNoteFilter.isEmpty
 
         _restaurants = Query(
@@ -38,20 +38,7 @@ struct RestaurantListScreen: View {
                 // TODO: Deal with that remaining single divider line below
                 List {
                     ForEach(restaurants) { restaurant in
-                        ZStack {
-                            RestaurantCardView(restaurant: restaurant)
-                            
-                            NavigationLink(
-                                destination: RestaurantDetailScreen(
-                                    restaurant: restaurant
-                                )
-                            ) {
-                                EmptyView()
-                            }
-                            .opacity(0)
-                        }
-                        .frame(height: 120)
-                        .padding(8)
+                        RestaurantCardView(restaurant: restaurant)
                     }
                     .onDelete(perform: deleteRestaurants(indexes:))
                     .listRowSeparator(.hidden)
@@ -79,7 +66,7 @@ struct RestaurantListScreen: View {
             ToolbarItem(placement: .topBarTrailing) {
                 EditButton()
             }
-            
+
             ToolbarItem(placement: .bottomBar) {
                 Button("Pick for me!") {
                     // TODO: Do something with the logic
