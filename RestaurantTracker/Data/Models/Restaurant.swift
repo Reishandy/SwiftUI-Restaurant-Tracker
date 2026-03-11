@@ -8,18 +8,6 @@
 import Foundation
 import SwiftData
 
-enum Price: String, Codable, CaseIterable {
-    case cheap
-    case mid
-    case expensive
-}
-
-enum Taste: String, Codable, CaseIterable {
-    case trash
-    case meh
-    case heavenly
-}
-
 @Model
 class Restaurant {
     var id: UUID
@@ -65,7 +53,7 @@ class Restaurant {
             notes: "",
             rating: 4,
             price: .cheap,
-            taste: .meh,
+            taste: .ok,
             photoData: imageData(
                 from: "https://picsum.photos/seed/warungbuni/1000/1000"
             )
@@ -96,7 +84,7 @@ class Restaurant {
             notes: "Avoid the fried fish, kinda bad",
             rating: 3,
             price: .expensive,
-            taste: .meh,
+            taste: .ok,
             photoData: imageData(
                 from: "https://picsum.photos/seed/resto4/200/200"
             )

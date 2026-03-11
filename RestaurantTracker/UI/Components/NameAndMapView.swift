@@ -8,12 +8,52 @@
 import SwiftUI
 
 struct NameAndMapView: View {
+    @Bindable var restaurant: Restaurant
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        // TODO: Implement
+        VStack(alignment: .leading, spacing: 18) {
+            TextField(
+                "Restaurant name",
+                text: $restaurant.name,
+                axis: .vertical
+            )
+            .lineLimit(1...3)
+            .font(.title)
+            .bold()
+            // This is to prevent multi lines on name, so only singe line
+            .onChange(of: restaurant.name) { oldValue, newValue in
+                if newValue.contains("\n") {
+                    restaurant.name = newValue.replacingOccurrences(
+                        of: "\n",
+                        with: ""
+                    )
+                }
+            }
+
+            HStack {
+                // Display the open link button if
+                // it is not empty and is a valid url
+                if !restaurant.mapLink.isEmpty,
+                    isValidWebURL(restaurant.mapLink),
+                    let mapURL = URL(string: restaurant.mapLink)
+                {
+                    Link(destination: mapURL) {
+                        Image(systemName: "arrow.up.forward.app")
+                            .font(.title)
+                    }
+                }
+
+                TextField(
+                    "Restaurant Map Link",
+                    text: $restaurant.mapLink
+                )
+                .font(.title3)
+                .foregroundStyle(.secondary)
+            }
+        }
     }
 }
 
 #Preview {
-    NameAndMapView()
+    NameAndMapView(restaurant: SampleData.shared.restaurantSample)
 }

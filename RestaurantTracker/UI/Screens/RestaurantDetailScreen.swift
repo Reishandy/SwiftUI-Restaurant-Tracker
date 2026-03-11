@@ -23,56 +23,18 @@ struct RestaurantDetailScreen: View {
     var body: some View {
         ScrollView {
             VStack {
+                // TODO: Implement click and save
                 ImageContainerView(
                     imageData: restaurant.photoData,
                     width: .infinity,
                     height: 400
                 )
 
-                // TODO: Extract this
-                VStack(alignment: .leading, spacing: 18) {
-                    TextField(
-                        "Restaurant name",
-                        text: $restaurant.name,
-                        axis: .vertical
-                    )
-                    .lineLimit(1...3)
-                    .font(.title)
-                    .bold()
-                    // This is to prevent multi lines on name, so only singe line
-                    .onChange(of: restaurant.name) { oldValue, newValue in
-                        if newValue.contains("\n") {
-                            restaurant.name = newValue.replacingOccurrences(
-                                of: "\n",
-                                with: ""
-                            )
-                        }
-                    }
+                NameAndMapView(restaurant: restaurant)
+                    .padding()
 
-                    HStack {
-                        // Display the open link button if
-                        // it is not empty and is a valid url
-                        if !restaurant.mapLink.isEmpty,
-                            isValidWebURL(restaurant.mapLink),
-                            let mapURL = URL(string: restaurant.mapLink)
-                        {
-                            Link(destination: mapURL) {
-                                Image(systemName: "arrow.up.forward.app")
-                                    .font(.title)
-                            }
-                        }
-
-                        TextField(
-                            "Restaurant Map Link",
-                            text: $restaurant.mapLink
-                        )
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                    }
-                }
-                .padding()
-
-                // Card with reviews
+                ReviewsCardView(restaurant: restaurant)
+                    .padding()
 
                 // Card for note
 
@@ -80,7 +42,7 @@ struct RestaurantDetailScreen: View {
             }
         }
         .edgesIgnoringSafeArea(.top)
-        .navigationTitle("Restaurant")
+        .navigationTitle(isNew ? "Add Restaurant" : "Restaurant Detail")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if isNew {

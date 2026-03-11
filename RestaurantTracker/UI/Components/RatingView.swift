@@ -9,16 +9,18 @@ import SwiftUI
 
 struct RatingView: View {
     let rating: Int
+    var size: Font? = Font.body
     var onStarClick: ((Int) -> Void)? = nil
     // onStarClick will return the tapped star's value
     
     var body: some View {
         HStack {
-            ForEach(1...5, id: \.description) { number in
+            ForEach(0..<5, id: \.description) { number in
                 Image(systemName: number >= rating ? "star" : "star.fill")
                     .onTapGesture {
-                        onStarClick?(number)
+                        onStarClick?(number + 1)
                     }
+                    .font(size)
             }
         }
     }
