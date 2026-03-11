@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct IconView: View {
+    let imageData: Data?
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            if let imageData = imageData {
+                if let uiImage = UIImage(data: imageData) {
+                    Image(uiImage: uiImage)
+                }
+            } else {
+                Image(systemName: "photo")
+                    .font(.largeTitle)
+            }
+            
+            RoundedRectangle(cornerRadius: 12)
+                .frame(width: 120)
+                .foregroundStyle(Color(UIColor.secondaryLabel))
+        }
     }
 }
 
 #Preview {
-    IconView()
+    IconView(imageData: nil)
 }

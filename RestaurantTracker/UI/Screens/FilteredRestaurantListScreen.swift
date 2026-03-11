@@ -14,8 +14,7 @@ struct FilteredRestaurantListScreen: View {
     var body: some View {
         NavigationSplitView {
             RestaurantListScreen(titleAndNoteFilter: searchText)
-                .searchable(text: $searchText)
-                // TODO: Search bar location
+                .searchable(text: $searchText, placement: .navigationBarDrawer)
         } detail: {
             Text("Select a restaurant")
                 .navigationTitle("Restaurant")

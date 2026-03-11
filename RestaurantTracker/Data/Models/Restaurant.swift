@@ -54,10 +54,10 @@ class Restaurant {
         self.Taste = taste
         self.photoData = photoData
     }
-    
+
     static let sampleData = [
         Restaurant(
-            name: "Resto 1",
+            name: "Warung Makan Murah Bu Ni",
             mapLink: "https://reishandy.id/",
             notes: "",
             rating: 4,
@@ -73,7 +73,8 @@ class Restaurant {
             taste: .trash,
         ),
         Restaurant(
-            name: "Resto 3",
+            name:
+                "Resto 3 for some reason has a very long name, why? I don't know really but it is very long",
             mapLink: "https://reishandy.id/",
             notes: "The goat",
             rating: 5,
@@ -87,6 +88,6 @@ class Restaurant {
             rating: 3,
             price: .expensive,
             taste: .meh,
-        )
+        ),
     ]
 }

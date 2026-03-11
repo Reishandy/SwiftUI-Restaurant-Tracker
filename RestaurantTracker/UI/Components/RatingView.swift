@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct RatingView: View {
+    let rating: Int
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            ForEach(0..<5, id: \.description) { number in
+                Image(systemName: number >= rating ? "star" : "star.fill")
+            }
+        }
     }
 }
 
 #Preview {
-    RatingView()
+    RatingView(rating: 3)
 }

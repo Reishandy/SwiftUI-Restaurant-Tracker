@@ -32,6 +32,7 @@ struct RestaurantDetailScreen: View {
                     Button("Save") {
                         dismiss()
                     }
+                    .disabled(restaurant.name.isEmpty)
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {

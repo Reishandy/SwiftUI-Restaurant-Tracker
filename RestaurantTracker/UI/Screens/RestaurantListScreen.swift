@@ -35,17 +35,26 @@ struct RestaurantListScreen: View {
                 // TODO: Deal with that remaining single divider line below
                 List {
                     ForEach(restaurants) { restaurant in
-                        NavigationLink(restaurant.name) {
-                            RestaurantDetailScreen(restaurant: restaurant)
+                        ZStack {
+                            RestaurantCardView(restaurant: restaurant)
+                            
+                            NavigationLink(
+                                destination: RestaurantDetailScreen(
+                                    restaurant: restaurant
+                                )
+                            ) {
+                                EmptyView()
+                            }
+                            .opacity(0)
                         }
+                        .frame(height: 120)
+                        .padding(8)
                     }
                     .onDelete(perform: deleteRestaurants(indexes:))
                     .listRowSeparator(.hidden)
-
-                    Spacer()
+                    .listRowInsets(EdgeInsets())
                 }
                 .listStyle(.plain)
-                .listRowBackground(Color(UIColor.systemBackground))
             } else {
                 ContentUnavailableView(
                     "No Restaurant yet",
@@ -66,6 +75,13 @@ struct RestaurantListScreen: View {
 
             ToolbarItem(placement: .topBarTrailing) {
                 EditButton()
+            }
+            
+            ToolbarItem(placement: .bottomBar) {
+                Button("Pick for me!") {
+                    
+                }
+                .frame(maxWidth: .infinity)
             }
         }
         .sheet(item: $newRestaurant) { restaurant in
@@ -105,7 +121,7 @@ struct RestaurantListScreen: View {
 
 #Preview("Filtered") {
     NavigationStack {
-        RestaurantListScreen(titleAndNoteFilter: "goat")
+        RestaurantListScreen(titleAndNoteFilter: "for")
             .modelContainer(SampleData.shared.modelContainer)
     }
 }

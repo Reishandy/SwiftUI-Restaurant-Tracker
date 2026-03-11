@@ -8,11 +8,37 @@
 import SwiftUI
 
 struct RestaurantCardView: View {
+    let restaurant: Restaurant
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack() {
+            IconView(imageData: restaurant.photoData)
+            
+            VStack() {
+                HStack {
+                    Text(restaurant.name)
+                        .font(.headline)
+                    
+                    Spacer()
+                }
+                .padding(.bottom, 8)
+
+                
+                HStack {
+                    RatingView(rating: restaurant.rating)
+                    
+                    Spacer()
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.leading, 8)
+        }
+        .padding(10)
+        .glassEffect(in: RoundedRectangle(cornerRadius: 12)) // TODO: Solve the shadow conflict with the list
     }
 }
 
 #Preview {
-    RestaurantCardView()
+    RestaurantCardView(restaurant: SampleData.shared.restaurantSample)
+        .frame(maxWidth: .infinity, maxHeight: 150)
 }
