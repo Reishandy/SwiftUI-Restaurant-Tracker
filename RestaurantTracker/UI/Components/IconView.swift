@@ -15,6 +15,9 @@ struct IconView: View {
             if let imageData = imageData {
                 if let uiImage = UIImage(data: imageData) {
                     Image(uiImage: uiImage)
+                        .resizable()
+                        .frame(width: 120, height: 100)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
             } else {
                 Image(systemName: "photo")
@@ -22,7 +25,7 @@ struct IconView: View {
             }
             
             RoundedRectangle(cornerRadius: 12)
-                .frame(width: 120)
+                .frame(width: 120, height: 100)
                 .foregroundStyle(Color(UIColor.secondaryLabel))
         }
     }

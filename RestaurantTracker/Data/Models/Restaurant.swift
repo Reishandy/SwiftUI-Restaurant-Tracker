@@ -10,6 +10,7 @@ import SwiftData
 
 enum Price: String, Codable, CaseIterable {
     case cheap
+    case mid
     case expensive
 }
 
@@ -55,6 +56,8 @@ class Restaurant {
         self.photoData = photoData
     }
 
+    // ---------- This is for the XCode preview, not used in actual app ----------
+
     static let sampleData = [
         Restaurant(
             name: "Warung Makan Murah Bu Ni",
@@ -71,6 +74,9 @@ class Restaurant {
             rating: 1,
             price: .expensive,
             taste: .trash,
+            photoData: imageData(
+                from: "https://picsum.photos/seed/resto2/1000/1000"
+            )
         ),
         Restaurant(
             name:
@@ -88,6 +94,17 @@ class Restaurant {
             rating: 3,
             price: .expensive,
             taste: .meh,
+            photoData: imageData(
+                from: "https://picsum.photos/seed/resto4/200/200"
+            )
         ),
     ]
+
+    // To Convert links to an image data (Data)
+    static func imageData(from urlString: String) -> Data? {
+        guard let url = URL(string: urlString),
+            let data = try? Data(contentsOf: url)
+        else { return nil }
+        return data
+    }
 }
