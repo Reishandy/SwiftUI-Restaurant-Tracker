@@ -87,8 +87,6 @@ struct RestaurantDetailScreen: View {
                     }
                 }
             }
-
-            // TODO: Add share functionality
         }
         .scrollDismissesKeyboard(.interactively)
     }

@@ -14,10 +14,12 @@ struct RestaurantListScreen: View {
 
     @State private var newRestaurant: Restaurant?
     @Binding var selectedRestaurant: Restaurant?
+    @Binding var sortOption: SortOption
     private var fromSearch: Bool
 
     init(
         titleAndNoteFilter: String = "",
+        sortOption: Binding<SortOption>,
         selectedRestaurant: Binding<Restaurant?>
     ) {
         let predicate = #Predicate<Restaurant> { restaurant in
@@ -30,12 +32,12 @@ struct RestaurantListScreen: View {
 
         self.fromSearch = !titleAndNoteFilter.isEmpty
         self._selectedRestaurant = selectedRestaurant
+        self._sortOption = sortOption
         // Binding needs the _ in front of var name
 
         _restaurants = Query(
             filter: predicate,
-            sort: \Restaurant.timestamp,
-            order: .reverse
+            sort: sortOption.wrappedValue.descriptors
         )
     }
 
@@ -69,8 +71,20 @@ struct RestaurantListScreen: View {
                 )
             }
 
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .secondaryAction) {
                 EditButton()
+            }
+
+            ToolbarItem(placement: .secondaryAction) {
+                Menu {
+                    Picker("Sort By", selection: $sortOption) {
+                        ForEach(SortOption.allCases, id: \.self) { option in
+                            Text(option.rawValue).tag(option)
+                        }
+                    }
+                } label: {
+                    Label("Sort", systemImage: "arrow.up.arrow.down")
+                }
             }
 
             ToolbarItem(placement: .bottomBar) {
@@ -111,8 +125,11 @@ struct RestaurantListScreen: View {
 #Preview {
     NavigationStack {
         // These preview won't have the randomizer working cause I used nil
-        RestaurantListScreen(selectedRestaurant: .constant(nil))
-            .modelContainer(SampleData.shared.modelContainer)
+        RestaurantListScreen(
+            sortOption: .constant(SortOption.newest),
+            selectedRestaurant: .constant(nil)
+        )
+        .modelContainer(SampleData.shared.modelContainer)
     }
 }
 
@@ -120,6 +137,7 @@ struct RestaurantListScreen: View {
     NavigationStack {
         RestaurantListScreen(
             titleAndNoteFilter: "for",
+            sortOption: .constant(SortOption.newest),
             selectedRestaurant: .constant(nil)
         )
         .modelContainer(SampleData.shared.modelContainer)
@@ -128,7 +146,10 @@ struct RestaurantListScreen: View {
 
 #Preview("Empty") {
     NavigationStack {
-        RestaurantListScreen(selectedRestaurant: .constant(nil))
-            .modelContainer(for: Restaurant.self, inMemory: true)
+        RestaurantListScreen(
+            sortOption: .constant(SortOption.newest),
+            selectedRestaurant: .constant(nil)
+        )
+        .modelContainer(for: Restaurant.self, inMemory: true)
     }
 }

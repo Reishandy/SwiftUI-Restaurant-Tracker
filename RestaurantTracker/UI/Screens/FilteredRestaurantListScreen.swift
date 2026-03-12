@@ -10,12 +10,14 @@ import SwiftUI
 
 struct FilteredRestaurantListScreen: View {
     @State private var searchText = ""
+    @State private var sortOption: SortOption = .newest
     @State private var selectedRestaurant: Restaurant?
 
     var body: some View {
         NavigationSplitView {
             RestaurantListScreen(
                 titleAndNoteFilter: searchText,
+                sortOption: $sortOption,
                 selectedRestaurant: $selectedRestaurant
             )
             .searchable(text: $searchText, placement: .toolbar)
