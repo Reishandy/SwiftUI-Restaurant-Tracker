@@ -25,11 +25,13 @@ struct RestaurantDetailScreen: View {
                 DetailImageView(restaurant: restaurant)
 
                 NameAndMapView(restaurant: restaurant)
+                    .padding()
 
                 ReviewsCardView(restaurant: restaurant)
                     .padding()
 
                 NoteCardView(restaurant: restaurant)
+                    .padding()
             }
         }
         .edgesIgnoringSafeArea(.top)
