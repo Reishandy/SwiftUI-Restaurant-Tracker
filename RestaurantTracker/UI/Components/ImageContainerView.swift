@@ -29,7 +29,7 @@ struct ImageContainerView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .frame(width: width, height: height)
-                    .foregroundStyle(Color(UIColor.secondaryLabel))
+                    .foregroundStyle(Color(UIColor.secondarySystemFill))
 
                 Image(systemName: "photo")
                     .font(.largeTitle)

@@ -11,10 +11,15 @@ import SwiftUI
 struct RestaurantListScreen: View {
     @Query private var restaurants: [Restaurant]
     @Environment(\.modelContext) private var context
+
     @State private var newRestaurant: Restaurant?
+    @Binding var selectedRestaurant: Restaurant?
     private var fromSearch: Bool
 
-    init(titleAndNoteFilter: String = "") {
+    init(
+        titleAndNoteFilter: String = "",
+        selectedRestaurant: Binding<Restaurant?>
+    ) {
         let predicate = #Predicate<Restaurant> { restaurant in
             titleAndNoteFilter.isEmpty
                 || restaurant.name.localizedStandardContains(titleAndNoteFilter)
@@ -23,7 +28,9 @@ struct RestaurantListScreen: View {
                 )
         }
 
-        fromSearch = !titleAndNoteFilter.isEmpty
+        self.fromSearch = !titleAndNoteFilter.isEmpty
+        self._selectedRestaurant = selectedRestaurant
+        // Binding needs the _ in front of var name
 
         _restaurants = Query(
             filter: predicate,
@@ -33,9 +40,9 @@ struct RestaurantListScreen: View {
     }
 
     var body: some View {
-        Group {
+        ZStack {
             if !restaurants.isEmpty {
-                List {
+                List(selection: $selectedRestaurant) {
                     ForEach(restaurants) { restaurant in
                         RestaurantCardView(restaurant: restaurant)
                     }
@@ -67,10 +74,10 @@ struct RestaurantListScreen: View {
             }
 
             ToolbarItem(placement: .bottomBar) {
+                // TODO: Fix the button width
                 Button("Pick for me!") {
-                    // TODO: Do something with the logic
+                    selectedRestaurant = restaurants.randomElement()
                 }
-                .frame(maxWidth: .infinity)
             }
         }
         .sheet(item: $newRestaurant) { restaurant in
@@ -103,21 +110,25 @@ struct RestaurantListScreen: View {
 
 #Preview {
     NavigationStack {
-        RestaurantListScreen()
+        // These preview won't have the randomizer working cause I used nil
+        RestaurantListScreen(selectedRestaurant: .constant(nil))
             .modelContainer(SampleData.shared.modelContainer)
     }
 }
 
 #Preview("Filtered") {
     NavigationStack {
-        RestaurantListScreen(titleAndNoteFilter: "for")
-            .modelContainer(SampleData.shared.modelContainer)
+        RestaurantListScreen(
+            titleAndNoteFilter: "for",
+            selectedRestaurant: .constant(nil)
+        )
+        .modelContainer(SampleData.shared.modelContainer)
     }
 }
 
 #Preview("Empty") {
     NavigationStack {
-        RestaurantListScreen()
+        RestaurantListScreen(selectedRestaurant: .constant(nil))
             .modelContainer(for: Restaurant.self, inMemory: true)
     }
 }

@@ -26,25 +26,37 @@ struct RestaurantDetailScreen: View {
     var body: some View {
         ScrollView {
             VStack {
-                PhotosPicker(
-                    selection: $selectedPhoto,
-                    matching: .images,
-                    photoLibrary: .shared()
-                ) {
-                    ImageContainerView(
-                        imageData: restaurant.photoData,
-                        width: .infinity,
-                        height: 400
-                    )
-                }
-                .foregroundStyle(.secondary)
-                .onChange(of: selectedPhoto) { oldPhoto, newPhoto in
-                    Task {
-                        if let data = try? await newPhoto?.loadTransferable(
-                            type: Data.self
-                        ) {
-                            restaurant.photoData = data
+                ZStack(alignment: .bottomTrailing) {
+                    PhotosPicker(
+                        selection: $selectedPhoto,
+                        matching: .images,
+                        photoLibrary: .shared()
+                    ) {
+                        ImageContainerView(
+                            imageData: restaurant.photoData,
+                            width: .infinity,
+                            height: 400
+                        )
+                    }
+                    .foregroundStyle(.secondary)
+                    .onChange(of: selectedPhoto) { oldPhoto, newPhoto in
+                        Task {
+                            if let data = try? await newPhoto?.loadTransferable(
+                                type: Data.self
+                            ) {
+                                restaurant.photoData = data
+                            }
                         }
+                    }
+
+                    if restaurant.photoData != nil {
+                        Button("Delete Image", systemImage: "trash.circle") {
+                            restaurant.photoData = nil
+                        }
+                        .labelStyle(.iconOnly)
+                        .buttonStyle(.glassProminent)
+                        .tint(.red)
+                        .padding()
                     }
                 }
 

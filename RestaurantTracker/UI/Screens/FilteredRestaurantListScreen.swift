@@ -10,15 +10,23 @@ import SwiftUI
 
 struct FilteredRestaurantListScreen: View {
     @State private var searchText = ""
+    @State private var selectedRestaurant: Restaurant?
 
     var body: some View {
         NavigationSplitView {
-            RestaurantListScreen(titleAndNoteFilter: searchText)
-                .searchable(text: $searchText, placement: .navigationBarDrawer)
+            RestaurantListScreen(
+                titleAndNoteFilter: searchText,
+                selectedRestaurant: $selectedRestaurant
+            )
+            .searchable(text: $searchText, placement: .toolbar)
         } detail: {
-            Text("Select a restaurant")
-                .navigationTitle("Restaurant")
-                .navigationBarTitleDisplayMode(.inline)
+            if let selectedRestaurant = selectedRestaurant {
+                RestaurantDetailScreen(restaurant: selectedRestaurant)
+            } else {
+                Text("Select a restaurant")
+                    .navigationTitle("Restaurant")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         }
     }
 }
