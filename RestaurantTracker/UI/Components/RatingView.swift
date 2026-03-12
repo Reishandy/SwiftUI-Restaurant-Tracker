@@ -16,13 +16,16 @@ struct RatingView: View {
     var body: some View {
         HStack {
             ForEach(0..<5, id: \.description) { number in
-                Image(systemName: number >= rating ? "star" : "star.fill")
+                Image(systemName: "star.fill")
                     .onTapGesture {
                         onStarClick?(number + 1)
                     }
                     .font(size)
+                    .foregroundStyle(number >= rating ? .yellow.opacity(1/4) : .yellow)
+                    .transition(.opacity)
             }
         }
+        .animation(.easeInOut, value: rating)
     }
 }
 
