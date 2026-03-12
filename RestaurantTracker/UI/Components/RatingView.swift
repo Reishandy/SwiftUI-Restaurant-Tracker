@@ -11,7 +11,6 @@ struct RatingView: View {
     let rating: Int
     var size: Font? = Font.body
     var onStarClick: ((Int) -> Void)? = nil
-    // onStarClick will return the tapped star's value
     
     var body: some View {
         HStack {

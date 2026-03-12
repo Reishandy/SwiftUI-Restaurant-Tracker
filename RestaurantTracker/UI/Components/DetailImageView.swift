@@ -40,6 +40,7 @@ struct DetailImageView: View {
             if restaurant.photoData != nil {
                 Button("Delete Image", systemImage: "trash.circle") {
                     restaurant.photoData = nil
+                    selectedPhoto = nil
                 }
                 .labelStyle(.iconOnly)
                 .buttonStyle(.glassProminent)
