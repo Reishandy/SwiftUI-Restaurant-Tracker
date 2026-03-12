@@ -41,6 +41,7 @@ struct NameAndMapView: View {
                         Image(systemName: "arrow.up.forward.app")
                             .font(.title)
                     }
+                    .transition(.move(edge: .leading).combined(with: .opacity))
                 }
 
                 TextField(
@@ -50,6 +51,7 @@ struct NameAndMapView: View {
                 .font(.title3)
                 .foregroundStyle(.secondary)
             }
+            .animation(.easeInOut, value: restaurant.mapLink)
         }
     }
 }
