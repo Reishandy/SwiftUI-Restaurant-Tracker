@@ -88,10 +88,13 @@ struct RestaurantListScreen: View {
             }
 
             ToolbarItem(placement: .bottomBar) {
-                // TODO: Fix the button width
-                Button("Pick for me!") {
+                Button {
                     selectedRestaurant = restaurants.randomElement()
+                } label: {
+                    Text("Pick for me!")
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderless)
             }
         }
         .sheet(item: $newRestaurant) { restaurant in
