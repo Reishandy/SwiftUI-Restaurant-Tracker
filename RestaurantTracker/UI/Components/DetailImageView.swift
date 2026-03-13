@@ -33,6 +33,7 @@ struct DetailImageView: View {
                         type: Data.self
                     ) {
                         restaurant.photoData = data
+                        selectedPhoto = nil
                     }
                 }
             }
